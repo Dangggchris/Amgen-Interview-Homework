@@ -20,9 +20,9 @@ class DataTable extends Component {
       "order": [[1, "desc"]],
       data: this.props.data,
       columns: [
+        { data: "Date", title: "Date" },
         { data: "Active", title: "Active" },
         { data: "Confirmed", title: "Confirmed" },
-        { data: "Date", title: "Date" },
         { data: "Deaths", title: "Deaths" },
         { data: "Recovered", title: "Recovered" }
       ]

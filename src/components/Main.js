@@ -51,6 +51,7 @@ class Main extends Component {
         let currentDate = new Date(data[i].Date);
         let convertedDate = moment(currentDate).format("L")
 
+        data[i].Date = convertedDate;
         totalCases.push(currentConfirmedCases);
         dates.push(convertedDate);
       }
