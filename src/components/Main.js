@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import axios from 'axios';
 import ApexChart from './ApexChart/ApexChart';
 import DataTable from './DataTable/DataTable';
 
@@ -11,7 +12,6 @@ import './Main.css'
 const override = css`
   display: block;
   margin: 0 auto;
-  padding: 100px;
   border-color: blue;
 `;
 class Main extends Component {
@@ -52,30 +52,31 @@ class Main extends Component {
     let totalCases = [];
     let dates = [];
 
-  await fetch('https://api.covid19api.com/total/country/' + this.state.selectedValue)
-    .then(res => res.json())
-    .then((data) => {
+    try {
+      await axios.get('https://api.covid19api.com/total/country/' + this.state.selectedValue)
+      .then((data) => {
+        data = data.data;
 
-      for(let i = 0; i < data.length; i++) {
-        let currentConfirmedCases = data[i].Confirmed;
-        let currentDate = new Date(data[i].Date);
-        let convertedDate = moment(currentDate).format("L")
+        for(let i = 0; i < data.length; i++) {
+          let currentConfirmedCases = data[i].Confirmed;
+          let currentDate = new Date(data[i].Date);
+          let convertedDate = moment(currentDate).format("L")
 
-        data[i].Date = convertedDate;
-        totalCases.push(currentConfirmedCases);
-        dates.push(convertedDate);
-      }
+          data[i].Date = convertedDate;
+          totalCases.push(currentConfirmedCases);
+          dates.push(convertedDate);
+        }
 
-      this.setState({
-        totalCases: totalCases,
-        dates: dates,
-        data: data,
-        loading: false
+        this.setState({
+          totalCases: totalCases,
+          dates: dates,
+          data: data,
+          loading: false
+        })
       })
-    })
-    .catch(error => {
+    } catch (error) {
       console.log(error)
-    })
+    }
   }
   
   render() {
@@ -105,7 +106,7 @@ class Main extends Component {
           {this.state.loading === true ? 
             <MoonLoader
             css={override}
-            size={150}
+            size={100}
             color={"#123abc"}
             loading={this.state.loading}
             /> 
