@@ -1,9 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import moment from 'moment';
 import ApexChart from './ApexChart/ApexChart';
 import DataTable from './DataTable/DataTable';
+
+import { css } from "@emotion/core";
+import BeatLoader from "react-spinners/BeatLoader";
+
 import './Main.css'
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: blue;
+`;
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -72,6 +81,11 @@ class Main extends Component {
 
     return (
       <div className="container">
+
+        <div className="loader">
+
+        </div>
+
         <div className="headerFormContainer">
           <h1 id="mainHeader">Amgen Homework Assignment</h1>
           <form id="mainForm" onSubmit={this.handleSubmit}>
@@ -85,10 +99,23 @@ class Main extends Component {
             </label>
             <button type="submit" disabled={this.state.loading}>Submit</button>
           </form>
-            {this.state.loading ? "Loading Information..." : "Done"}
         </div>
-        <ApexChart totalCases={this.state.totalCases} dates={this.state.dates} country={this.state.country}/>
-        <DataTable data={this.state.data} country={this.state.country} />
+        <div className="dataContainers">
+          {this.state.loading == true ? 
+            <BeatLoader
+            css={override}
+            size={50}
+            color={"#123abc"}
+            loading={this.state.loading}
+            /> 
+            :
+            <React.Fragment>
+              <ApexChart totalCases={this.state.totalCases} dates={this.state.dates} country={this.state.country}/>
+              <DataTable data={this.state.data} country={this.state.country} />
+            </React.Fragment>
+          }
+        </div>
+        
       </div>
     )
   }
