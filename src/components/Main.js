@@ -1,16 +1,17 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import moment from 'moment';
 import ApexChart from './ApexChart/ApexChart';
 import DataTable from './DataTable/DataTable';
 
 import { css } from "@emotion/core";
-import BeatLoader from "react-spinners/BeatLoader";
+import MoonLoader from "react-spinners/MoonLoader";
 
 import './Main.css'
 
 const override = css`
   display: block;
   margin: 0 auto;
+  padding: 100px;
   border-color: blue;
 `;
 class Main extends Component {
@@ -101,10 +102,10 @@ class Main extends Component {
           </form>
         </div>
         <div className="dataContainers">
-          {this.state.loading == true ? 
-            <BeatLoader
+          {this.state.loading === true ? 
+            <MoonLoader
             css={override}
-            size={50}
+            size={150}
             color={"#123abc"}
             loading={this.state.loading}
             /> 
