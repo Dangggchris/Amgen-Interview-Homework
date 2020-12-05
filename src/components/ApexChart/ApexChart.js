@@ -52,7 +52,7 @@ class ApexChart extends Component {
         },
         xaxis: {
           categories: this.props.dates,
-          tickAmount: 12
+          tickAmount: 10
         },
         fill: {
           colors: ['#1998ff'],

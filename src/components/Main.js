@@ -54,8 +54,8 @@ class Main extends Component {
 
     try {
       await axios.get('https://api.covid19api.com/total/country/' + this.state.selectedValue)
-      .then((data) => {
-        data = data.data;
+      .then((response) => {
+        let data = response.data;
 
         for(let i = 0; i < data.length; i++) {
           let currentConfirmedCases = data[i].Confirmed;
@@ -76,6 +76,7 @@ class Main extends Component {
       })
     } catch (error) {
       console.log(error)
+      alert('Too many requests! Please wait a minute')
     }
   }
   
@@ -89,7 +90,7 @@ class Main extends Component {
         </div>
 
         <div className="headerFormContainer">
-          <h1 id="mainHeader">Amgen Homework Assignment</h1>
+          <h1 id="mainHeader">Covid-19 Tracker</h1>
           <form id="mainForm" onSubmit={this.handleSubmit}>
             <label>
               Select Country:
