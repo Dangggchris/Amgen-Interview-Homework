@@ -53,7 +53,7 @@ class Main extends Component {
     let dates = [];
 
     try {
-      await axios.get('https://api.covid19api.com/total/country/' + this.state.selectedValue)
+      await axios.get('/api/getCountry/' + this.state.selectedValue)
       .then((response) => {
         let data = response.data;
 
