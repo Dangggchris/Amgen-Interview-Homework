@@ -11,7 +11,7 @@ class DataTable extends Component {
     super(props);
     this.tableData = null;
     this.state = {
-      country: "UNITED STATES"
+      country: "United States"
     }
   }
   
@@ -44,7 +44,7 @@ class DataTable extends Component {
 
     return (
       <div className="tableContainer">
-        <h1 id="datatableHeader" >ALL CASES IN {this.state.country}</h1>
+        <h1 id="datatableHeader" > History {this.state.country}</h1>
         <table id="myTable" className="display" width="100%"></table>
       </div>
     )

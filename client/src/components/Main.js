@@ -22,7 +22,7 @@ class Main extends Component {
       data: {},
       totalCases: [],
       dates: [],
-      country: "UNITED STATES",
+      country: "United States",
       loading: false
     }
     this.handleChange = this.handleChange.bind(this);
@@ -36,9 +36,9 @@ class Main extends Component {
   handleSubmit(event) {
 
     this.setState({loading: true})
-
     this.getAllCountries();
-    let country = this.state.selectedValue.replace(/-/g, ' ').toUpperCase();
+    
+    let country = this.state.selectedValue.replace(/-/g, ' ').toLowerCase().split(' ').map( word => { return word[0].toUpperCase() + word.slice(1)}).join(' ');
 
     this.setState({
       country: country
@@ -46,7 +46,6 @@ class Main extends Component {
     event.preventDefault();
   }
 
-  // Call API after submit button is pressed
   getAllCountries = async () => {
 
     let totalCases = [];
@@ -58,16 +57,13 @@ class Main extends Component {
 
         for(let i = 0; i < data.length; i++) {
           let currentCase = {};
-
           let currentConfirmedCase = data[i].Confirmed;
           let currentDate = new Date(data[i].Date);
           let convertedDate = moment(currentDate).format('L');
 
+          data[i].Date = convertedDate;
           currentCase['y'] = currentConfirmedCase;
           currentCase['x'] = convertedDate;
-          // currentCaseArray.push(convertedDate)
-          // currentCaseArray.push(currentConfirmedCase)
-
           totalCases.push(currentCase);
         }
 
@@ -79,7 +75,7 @@ class Main extends Component {
       })
     } catch (error) {
       console.log(error)
-      alert('Too many requests! Please wait a minute')
+      alert('Too many requests! Please wait a minute.')
     }
   }
 
@@ -87,11 +83,6 @@ class Main extends Component {
 
     return (
       <div className="container">
-
-        <div className="loader">
-
-        </div>
-
         <div className="headerFormContainer">
           <h1 id="mainHeader">Covid-19 Tracker</h1>
           <form id="mainForm" onSubmit={this.handleSubmit}>
