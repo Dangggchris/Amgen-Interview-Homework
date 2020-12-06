@@ -12,7 +12,7 @@ import './Main.css'
 const override = css`
   display: block;
   margin: 0 auto;
-  border-color: blue;
+  border-color: #0d82ff;
 `;
 class Main extends Component {
   constructor(props) {
@@ -50,7 +50,6 @@ class Main extends Component {
   getAllCountries = async () => {
 
     let totalCases = [];
-    let dates = [];
 
     try {
       await axios.get('/api/getCountry/' + this.state.selectedValue)
@@ -58,18 +57,22 @@ class Main extends Component {
         let data = response.data;
 
         for(let i = 0; i < data.length; i++) {
-          let currentConfirmedCases = data[i].Confirmed;
-          let currentDate = new Date(data[i].Date);
-          let convertedDate = moment(currentDate).format("L")
+          let currentCase = {};
 
-          data[i].Date = convertedDate;
-          totalCases.push(currentConfirmedCases);
-          dates.push(convertedDate);
+          let currentConfirmedCase = data[i].Confirmed;
+          let currentDate = new Date(data[i].Date);
+          let convertedDate = moment(currentDate).format('L');
+
+          currentCase['y'] = currentConfirmedCase;
+          currentCase['x'] = convertedDate;
+          // currentCaseArray.push(convertedDate)
+          // currentCaseArray.push(currentConfirmedCase)
+
+          totalCases.push(currentCase);
         }
 
         this.setState({
           totalCases: totalCases,
-          dates: dates,
           data: data,
           loading: false
         })
@@ -79,7 +82,7 @@ class Main extends Component {
       alert('Too many requests! Please wait a minute')
     }
   }
-  
+
   render() {
 
     return (
@@ -108,12 +111,12 @@ class Main extends Component {
             <MoonLoader
             css={override}
             size={100}
-            color={"#123abc"}
+            color={"#0d82ff"}
             loading={this.state.loading}
             /> 
             :
             <React.Fragment>
-              <ApexChart totalCases={this.state.totalCases} dates={this.state.dates} country={this.state.country}/>
+              <ApexChart totalCases={this.state.totalCases} country={this.state.country}/>
               <DataTable data={this.state.data} country={this.state.country} />
             </React.Fragment>
           }

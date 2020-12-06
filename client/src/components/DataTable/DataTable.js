@@ -16,7 +16,7 @@ class DataTable extends Component {
   }
   
   componentDidMount() {
-    this.tableData = $('#myTable').DataTable({
+    this.tableData = $("#myTable").DataTable({
       "order": [[1, "desc"]],
       data: this.props.data,
       columns: [

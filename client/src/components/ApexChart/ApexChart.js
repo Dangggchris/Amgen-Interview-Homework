@@ -13,7 +13,7 @@ class ApexChart extends Component {
           foreColor: '#333'
         },
         xaxis: {
-          categories: []
+          type: 'datetime'
         },
         fill: {
           colors: ['#f44336'],
@@ -39,10 +39,10 @@ class ApexChart extends Component {
   }
 
   setStateOnProps() {
-    let newTitle = "Total Cases Over Time In " + this.props.country;
+    let newTitle = 'Total Cases Over Time In ' + this.props.country;
     this.setState({
       series: [{
-        name: "Cases",
+        name: 'Cases',
         data: this.props.totalCases
       }],
       options: {
@@ -51,8 +51,10 @@ class ApexChart extends Component {
           foreColor: '#333'
         },
         xaxis: {
-          categories: this.props.dates,
-          tickAmount: 10
+          type: 'datetime',
+          labels: {
+            format: 'MM yyyy'
+          }
         },
         fill: {
           colors: ['#1998ff'],
@@ -88,7 +90,7 @@ class ApexChart extends Component {
   
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props !== prevProps) {
-      this.setStateOnProps();
+      this.setStateOnProps(); 
     }
   }
 
@@ -100,9 +102,9 @@ class ApexChart extends Component {
         <Chart 
           options = {this.state.options}
           series = {this.state.series}
-          type = 'area'
-          height = '450'
-          width = '100%'
+          type = "area"
+          height = "450"
+          width = "100%"
         />
         </div>
       </div>
