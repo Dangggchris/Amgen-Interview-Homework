@@ -4,10 +4,8 @@ import axios from 'axios';
 import ApexChart from './ApexChart/ApexChart';
 import DataTable from './DataTable/DataTable';
 import PieChart from './PieChart/PieChart';
-
 import { css } from "@emotion/core";
 import MoonLoader from "react-spinners/MoonLoader";
-
 import './Main.css'
 
 const override = css`
@@ -39,7 +37,6 @@ class Main extends Component {
   }
 
   handleSubmit(event) {
-
     this.setState({loading: true})
     this.getAllCountries();
     
@@ -49,14 +46,16 @@ class Main extends Component {
       country: country
     }) 
 
+    // Show charts and datatable
     if (this.state.initialLoad === true) { this.setState({ initialLoad: false})}
     event.preventDefault();
   }
 
+  // API Query
   getAllCountries = async () => {
 
     let totalCases = [];
-    let latestInfo = []
+    let latestInfo = [];
 
     try {
       await axios.get('/api/getCountry/' + this.state.selectedValue)
@@ -64,11 +63,13 @@ class Main extends Component {
         let data = response.data;
         let last = data[data.length-1]
 
+        // Grab only the most current information needed to populate the pie/donut chart
         latestInfo.push(last.Active);
         latestInfo.push(last.Deaths);
         latestInfo.push(last.Recovered);
         let mostRecentDate = moment(last.Date).format('L');
 
+        // Loop through every index and create the data needed to populate line/area chart and datatable
         for(let i = 0; i < data.length; i++) {
           let currentCase = {};
           let currentConfirmedCase = data[i].Confirmed;
@@ -90,30 +91,32 @@ class Main extends Component {
         })
       })
     } catch (error) {
-      console.log(error)
+      console.log(error);
       this.setState({
         initialLoad: true,
         loading: false
       })
-      alert('Too many requests! Please wait a minute.')
+      alert('Too many requests! Please wait a minute.');
     }
   }
 
+  // Function to determine whether or not to show the loader or the charts and datatables
   DataContainers = () => (
     this.state.loading === true ? 
-    <div id="loadingGif"><MoonLoader id="loadingGif"
-    css={override}
-    size={100}
-    color={"#0d82ff"}
-    loading={this.state.loading}
-    /></div>
+    <div id="loadingGif">
+      <MoonLoader id="loadingGif"
+      css={override}
+      size={100}
+      color={"#0d82ff"}
+      loading={this.state.loading}
+      />
+    </div>
     :
     <React.Fragment>
       <div id="apexContainer">
         <PieChart data={this.state.pieChartData} mostRecentDate={this.state.mostRecentDate}/>
         <ApexChart totalCases={this.state.totalCases} country={this.state.country} />
       </div>
-
       <DataTable data={this.state.data} country={this.state.country} />
     </React.Fragment>
   )

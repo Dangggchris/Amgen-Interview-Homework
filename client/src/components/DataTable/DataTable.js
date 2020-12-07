@@ -11,7 +11,7 @@ class DataTable extends Component {
     super(props);
     this.tableData = null;
     this.state = {
-      country: "United States"
+      country: ""
     }
   }
   
@@ -29,22 +29,11 @@ class DataTable extends Component {
     })
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props !== prevProps) {
-      this.setState({
-        country: this.props.country
-      })
-      this.tableData.clear()
-      this.tableData.rows.add(this.props.data)
-      this.tableData.draw();
-    }
-  }
-
   render() {
 
     return (
       <div className="tableContainer">
-        <h1 id="datatableHeader" > Reported Cases in {this.state.country}</h1>
+        <h1 id="datatableHeader" > Reported Cases in {this.props.country}</h1>
         <table id="myTable" className="display" width="100%"></table>
       </div>
     )

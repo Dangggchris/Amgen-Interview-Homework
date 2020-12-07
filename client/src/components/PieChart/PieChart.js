@@ -85,12 +85,6 @@ class PieChart extends Component {
   componentDidMount() {
     this.setStateOnProps();
   }
-  
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props !== prevProps) {
-      this.setStateOnProps(); 
-    }
-  }
 
   render() {
 
