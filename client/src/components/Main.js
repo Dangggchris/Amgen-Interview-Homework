@@ -67,7 +67,6 @@ class Main extends Component {
         currentObj['value'] = data[i].Slug.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         namesAndSlugsOptions.push(currentObj)
       } 
-      console.log(namesAndSlugsOptions);
       this.setState({
         selectOptions: namesAndSlugsOptions
       })
