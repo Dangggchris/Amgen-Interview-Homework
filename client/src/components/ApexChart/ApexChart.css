@@ -1,7 +1,8 @@
-.apexCharContainer {
+.apexChartContainer {
   align-items: center;
   background-color: white;
-  width: 91.5%;
+  width: 100%;
   border-radius: 8px;
   padding: 5px;
+  margin: 10px 1.5vw 10px 10px;
 }

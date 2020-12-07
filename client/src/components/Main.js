@@ -3,6 +3,7 @@ import moment from 'moment';
 import axios from 'axios';
 import ApexChart from './ApexChart/ApexChart';
 import DataTable from './DataTable/DataTable';
+import PieChart from './PieChart/PieChart';
 
 import { css } from "@emotion/core";
 import MoonLoader from "react-spinners/MoonLoader";
@@ -21,9 +22,11 @@ class Main extends Component {
     this.state = {
       selectedValue: "united-states",
       data: {},
+      pieChartData: [],
+      mostRecentDate: '',
       totalCases: [],
       dates: [],
-      country: "United States",
+      country: "",
       loading: false,
       initialLoad: true,
     }
@@ -53,11 +56,18 @@ class Main extends Component {
   getAllCountries = async () => {
 
     let totalCases = [];
+    let latestInfo = []
 
     try {
       await axios.get('/api/getCountry/' + this.state.selectedValue)
       .then((response) => {
         let data = response.data;
+        let last = data[data.length-1]
+
+        latestInfo.push(last.Active);
+        latestInfo.push(last.Deaths);
+        latestInfo.push(last.Recovered);
+        let mostRecentDate = moment(last.Date).format('L');
 
         for(let i = 0; i < data.length; i++) {
           let currentCase = {};
@@ -74,11 +84,17 @@ class Main extends Component {
         this.setState({
           totalCases: totalCases,
           data: data,
-          loading: false
+          loading: false,
+          pieChartData: latestInfo,
+          mostRecentDate: mostRecentDate
         })
       })
     } catch (error) {
       console.log(error)
+      this.setState({
+        initialLoad: true,
+        loading: false
+      })
       alert('Too many requests! Please wait a minute.')
     }
   }
@@ -93,7 +109,11 @@ class Main extends Component {
     /></div>
     :
     <React.Fragment>
-      <ApexChart totalCases={this.state.totalCases} country={this.state.country}/>
+      <div id="apexContainer">
+        <PieChart data={this.state.pieChartData} mostRecentDate={this.state.mostRecentDate}/>
+        <ApexChart totalCases={this.state.totalCases} country={this.state.country} />
+      </div>
+
       <DataTable data={this.state.data} country={this.state.country} />
     </React.Fragment>
   )

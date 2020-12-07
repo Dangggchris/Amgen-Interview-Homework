@@ -97,13 +97,13 @@ class ApexChart extends Component {
   render() {
 
     return (
-      <div className="apexCharContainer">
+      <div className="apexChartContainer">
         <div>
         <Chart 
           options = {this.state.options}
           series = {this.state.series}
           type = "area"
-          height = "450"
+          height = "300"
           width = "100%"
         />
         </div>
