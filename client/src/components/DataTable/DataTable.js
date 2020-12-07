@@ -44,7 +44,7 @@ class DataTable extends Component {
 
     return (
       <div className="tableContainer">
-        <h1 id="datatableHeader" > History {this.state.country}</h1>
+        <h1 id="datatableHeader" > Reported Cases in {this.state.country}</h1>
         <table id="myTable" className="display" width="100%"></table>
       </div>
     )

@@ -39,3 +39,11 @@
   background-color: #0d82ff;
   color: white;
 }
+
+#mainForm button:disabled {
+  opacity: 0.3;
+}
+
+#loadingGif {
+  margin-top: 20vh;
+}

@@ -53,7 +53,7 @@ class ApexChart extends Component {
         xaxis: {
           type: 'datetime',
           labels: {
-            format: 'MM yyyy'
+            format: 'MM / yyyy'
           }
         },
         fill: {

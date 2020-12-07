@@ -14,6 +14,7 @@ const override = css`
   margin: 0 auto;
   border-color: #0d82ff;
 `;
+
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +24,8 @@ class Main extends Component {
       totalCases: [],
       dates: [],
       country: "United States",
-      loading: false
+      loading: false,
+      initialLoad: true,
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -43,6 +45,8 @@ class Main extends Component {
     this.setState({
       country: country
     }) 
+
+    if (this.state.initialLoad === true) { this.setState({ initialLoad: false})}
     event.preventDefault();
   }
 
@@ -79,8 +83,23 @@ class Main extends Component {
     }
   }
 
-  render() {
+  DataContainers = () => (
+    this.state.loading === true ? 
+    <div id="loadingGif"><MoonLoader id="loadingGif"
+    css={override}
+    size={100}
+    color={"#0d82ff"}
+    loading={this.state.loading}
+    /></div>
+    :
+    <React.Fragment>
+      <ApexChart totalCases={this.state.totalCases} country={this.state.country}/>
+      <DataTable data={this.state.data} country={this.state.country} />
+    </React.Fragment>
+  )
+  
 
+  render() {
     return (
       <div className="container">
         <div className="headerFormContainer">
@@ -97,19 +116,10 @@ class Main extends Component {
             <button type="submit" disabled={this.state.loading}>Submit</button>
           </form>
         </div>
+
         <div className="dataContainers">
-          {this.state.loading === true ? 
-            <MoonLoader
-            css={override}
-            size={100}
-            color={"#0d82ff"}
-            loading={this.state.loading}
-            /> 
-            :
-            <React.Fragment>
-              <ApexChart totalCases={this.state.totalCases} country={this.state.country}/>
-              <DataTable data={this.state.data} country={this.state.country} />
-            </React.Fragment>
+          {
+            this.state.initialLoad === true ? null : <this.DataContainers />
           }
         </div>
         
