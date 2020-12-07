@@ -18,13 +18,14 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: "united-states",
+      selectOptions: [],
+      selectedValue: '',
       data: {},
       pieChartData: [],
       mostRecentDate: '',
       totalCases: [],
       dates: [],
-      country: "",
+      country: '',
       loading: false,
       initialLoad: true,
     }
@@ -51,6 +52,28 @@ class Main extends Component {
     event.preventDefault();
   }
 
+  // Grab all country's name and slug to populate select dropdown
+  componentDidMount = async () => {
+    let namesAndSlugsOptions = [] 
+
+    await axios.get('https://api.covid19api.com/countries')
+    .then(response => {
+      let data =response.data;
+
+      for(let i = 0; i < data.length; i++) {
+        let currentObj = {}
+
+        currentObj['option'] = data[i].Country;
+        currentObj['value'] = data[i].Slug.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        namesAndSlugsOptions.push(currentObj)
+      } 
+      console.log(namesAndSlugsOptions);
+      this.setState({
+        selectOptions: namesAndSlugsOptions
+      })
+    })
+  }
+  
   // API Query
   getAllCountries = async () => {
 
@@ -62,12 +85,17 @@ class Main extends Component {
       .then((response) => {
         let data = response.data;
         let last = data[data.length-1]
+        let mostRecentDate = ''
 
+        if (last !== undefined) {
+          latestInfo.push(last.Active);
+          latestInfo.push(last.Deaths);
+          latestInfo.push(last.Recovered);
+          mostRecentDate = moment(last.Date).format('L');
+        }
+        else {alert('This country has no data. :(')}
         // Grab only the most current information needed to populate the pie/donut chart
-        latestInfo.push(last.Active);
-        latestInfo.push(last.Deaths);
-        latestInfo.push(last.Recovered);
-        let mostRecentDate = moment(last.Date).format('L');
+
 
         // Loop through every index and create the data needed to populate line/area chart and datatable
         for(let i = 0; i < data.length; i++) {
@@ -131,9 +159,7 @@ class Main extends Component {
             <label>
               Select Country:
               <select value={this.state.selectedValue} onChange={this.handleChange}>
-                <option value={"united-states"}>United States</option>
-                <option value={"japan"}>Japan</option>
-                <option value={"spain"}>Spain</option>
+                {this.state.selectOptions.map(option => <option key={option.value} value={option.value}>{option.option}</option>)}
               </select>
             </label>
             <button type="submit" disabled={this.state.loading}>Submit</button>

@@ -37,7 +37,11 @@
   border-radius: 8px;
   border: none;
   margin: 5px;
-  padding: 5px
+  text-align-last: center;
+}
+
+#mainForm labe, select {
+  width: 200px;
 }
 
 #mainForm button{
