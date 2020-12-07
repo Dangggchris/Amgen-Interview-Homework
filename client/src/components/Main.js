@@ -66,10 +66,15 @@ class Main extends Component {
         currentObj['option'] = data[i].Country;
         currentObj['value'] = data[i].Slug.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         namesAndSlugsOptions.push(currentObj)
-      } 
+      }
       this.setState({
         selectOptions: namesAndSlugsOptions
       })
+    })
+    .catch(error => {
+      console.log(error)
+      alert('Too many requests! Please wait a minute.')
+      window.location.reload();
     })
   }
   
@@ -86,15 +91,14 @@ class Main extends Component {
         let last = data[data.length-1]
         let mostRecentDate = ''
 
+        // Grab only the most current information needed to populate the pie/donut chart
         if (last !== undefined) {
           latestInfo.push(last.Active);
           latestInfo.push(last.Deaths);
           latestInfo.push(last.Recovered);
           mostRecentDate = moment(last.Date).format('L');
         }
-        else {alert('This country has no data. :(')}
-        // Grab only the most current information needed to populate the pie/donut chart
-
+        else { alert('This country has no data. :(') }
 
         // Loop through every index and create the data needed to populate line/area chart and datatable
         for(let i = 0; i < data.length; i++) {
