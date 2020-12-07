@@ -58,7 +58,8 @@ class PieChart extends Component {
                 total: {
                   show: true,
                   showAlways: true,
-                  label: 'Total Cases: '
+                  label: 'Total Cases: ',
+                  fontSize: '14px'
                 }
               }
             }
